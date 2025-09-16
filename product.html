@@ -188,7 +188,7 @@
       {q: /exchange|old machine|return/i, a: 'You can exchange your old appliance and get up to ₹5,000 off.', gu: 'તમે તમારું જૂનું ઉપકરણ એક્સચેન્જ કરી શકો છો અને ₹5,000 સુધીની છૂટ મેળવી શકો છો.'},
     ]
 
-    function speak(text, lang='gu-IN'){
+    function speak(text, lang='en-IN'){
       if(!('speechSynthesis' in window)) return alert('Your browser does not support speech synthesis')
       const ut = new SpeechSynthesisUtterance(text)
       ut.lang = lang
@@ -202,7 +202,7 @@
     if(window.SpeechRecognition || window.webkitSpeechRecognition){
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition
       recognition = new SR()
-      recognition.lang = 'gu-IN' // prefer English but will capture many inputs; Gujarati capture works better on Chrome with 'gu-IN'
+      recognition.lang = 'en-IN' // prefer English but will capture many inputs; Gujarati capture works better on Chrome with 'en-IN'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
       recognition.onresult = (e)=>{
@@ -268,6 +268,7 @@
   </script>
 </body>
 </html>
+
 
 
 
