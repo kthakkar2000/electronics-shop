@@ -169,16 +169,16 @@
     const transcriptEl = document.getElementById('transcript')
 
     const canned = [
-      {q: /price|cost|₹|rupee/i, a: 'The price of this model is twelve thousand four hundred ninety nine rupees. We also offer EMI and exchange options in-store.', gu: 'આ મોડેલની કિંમત રૂ .12,499 છે. સ્ટોરમાં EMI અને exchange ઉપલબ્ધ છે.'},
-      {q: /warrant(y|ies)|guarantee/i, a: 'This product comes with a one year manufacturer warranty covering defects and parts.', gu: 'આ ઉત્પાદન સાથે 1 વર્ષનીવારંટી મળે છે જે ખામી અને ભાગોને ઢકે છે.'},
-      {q: /capacity|kg|weight/i, a: 'The machine has a 7 kilogram capacity — suitable for small families.', gu: 'આ મશીનની ક્ષમતા 7 કિગ્રા છે — નાનાં પરિવારો માટે પૂરતી.'},
+      {q: /price|cost|₹|rupee/i, a: 'The price of this model is Sixty five thousand rupees only. We also offer EMI and exchange options in-store.', gu: 'આ મોડેલની કિંમત રૂ .65,000 છે. સ્ટોરમાં EMI અને exchange ઉપલબ્ધ છે.'},
+      {q: /warrant(y|ies)|guarantee/i, a: 'This product comes with a two year manufacturer warranty covering defects and parts.', gu: 'આ ઉત્પાદન સાથે 2 વર્ષનીવારંટી મળે છે જે ખામી અને ભાગોને ઢકે છે.'},
+      {q: /capacity|kg|weight/i, a: 'The machine has a 12 kilogram capacity — suitable for small families.', gu: 'આ મશીનની ક્ષમતા 12 કિગ્રા છે — નાનાં પરિવારો માટે પૂરતી.'},
       {q: /rpm|spin|speed/i, a: 'Maximum spin speed is 1200 RPM which helps remove more water and reduce drying time.', gu: 'મહત્તમ સ્પિન સ્પીડ 1200 RPM છે જે વધુ પાણી દૂર કરવામાં અને સૂકવાને ટૂંકાવમાં મદદ કરે છે.'},
       {q: /energy|star/i, a: 'This is a 5-star energy rated appliance — very efficient on power consumption.', gu: 'આ એક 5-સ્ટાર એનર્જી રેટેડ ઉપકરણ છે — પાવર ખર્ચમાં ખૂબ અસરકારક.'},
       {q: /how to clean|clean|care/i, a: 'Use a mild detergent, run monthly drum clean cycle and wipe the door seal to avoid residue.', gu: 'હળવો ડિટર્જેન્ટ વાપરો, માસિક ડ્રમ ક્લીન સાઈકલ ચલાવો અને ડોર સીલ સાફ કરો.'},
       {q: /default/i, a: 'Sorry, I do not have that exact information. You can ask about price, capacity, warranty or cleaning and I will answer.', gu: 'માફ કરશો, મારા પાસે તે ચોક્કસ માહિતી નથી. તમે કિંમત, ક્ષમતા, વોરંટી અથવા સફાઈ વિશે પૂછો.'}
     ]
 
-    function speak(text, lang='en-IN'){
+    function speak(text, lang='gu-IN'){
       if(!('speechSynthesis' in window)) return alert('Your browser does not support speech synthesis')
       const ut = new SpeechSynthesisUtterance(text)
       ut.lang = lang
@@ -192,7 +192,7 @@
     if(window.SpeechRecognition || window.webkitSpeechRecognition){
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition
       recognition = new SR()
-      recognition.lang = 'en-IN' // prefer English but will capture many inputs; Gujarati capture works better on Chrome with 'gu-IN'
+      recognition.lang = 'gu-IN' // prefer English but will capture many inputs; Gujarati capture works better on Chrome with 'gu-IN'
       recognition.interimResults = false
       recognition.maxAlternatives = 1
       recognition.onresult = (e)=>{
@@ -258,4 +258,5 @@
   </script>
 </body>
 </html>
+
 
