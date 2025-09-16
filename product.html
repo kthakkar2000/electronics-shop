@@ -169,13 +169,23 @@
     const transcriptEl = document.getElementById('transcript')
 
     const canned = [
-      {q: /price|cost|₹|rupee/i, a: 'The price of this model is Sixty five thousand rupees only. We also offer EMI and exchange options in-store.', gu: 'આ મોડેલની કિંમત રૂ .65,000 છે. સ્ટોરમાં EMI અને exchange ઉપલબ્ધ છે.'},
+      {q: /price|cost|₹|rupee/i, a: 'The price of this model is Sixty five thousand rupees only.', gu: 'આ મોડેલની કિંમત રૂ .65,000 છે. સ્ટોરમાં EMI અને exchange ઉપલબ્ધ છે.'},
+      {q: /stock|available|i, a: 'This model has only 4 pieces left in stock. We also offer EMI and exchange options in-store.', gu: 'આ મોડેલના સ્ટોકમાં ફક્ત 4 પીસ બાકી છે. અમે સ્ટોરમાં EMI અને એક્સચેન્જ વિકલ્પો પણ પ્રદાન કરીએ છીએ.'},
       {q: /warrant(y|ies)|guarantee/i, a: 'This product comes with a two year manufacturer warranty covering defects and parts.', gu: 'આ ઉત્પાદન સાથે 2 વર્ષનીવારંટી મળે છે જે ખામી અને ભાગોને ઢકે છે.'},
       {q: /capacity|kg|weight/i, a: 'The machine has a 12 kilogram capacity — suitable for small families.', gu: 'આ મશીનની ક્ષમતા 12 કિગ્રા છે — નાનાં પરિવારો માટે પૂરતી.'},
       {q: /rpm|spin|speed/i, a: 'Maximum spin speed is 1200 RPM which helps remove more water and reduce drying time.', gu: 'મહત્તમ સ્પિન સ્પીડ 1200 RPM છે જે વધુ પાણી દૂર કરવામાં અને સૂકવાને ટૂંકાવમાં મદદ કરે છે.'},
       {q: /energy|star/i, a: 'This is a 5-star energy rated appliance — very efficient on power consumption.', gu: 'આ એક 5-સ્ટાર એનર્જી રેટેડ ઉપકરણ છે — પાવર ખર્ચમાં ખૂબ અસરકારક.'},
       {q: /how to clean|clean|care/i, a: 'Use a mild detergent, run monthly drum clean cycle and wipe the door seal to avoid residue.', gu: 'હળવો ડિટર્જેન્ટ વાપરો, માસિક ડ્રમ ક્લીન સાઈકલ ચલાવો અને ડોર સીલ સાફ કરો.'},
       {q: /default/i, a: 'Sorry, I do not have that exact information. You can ask about price, capacity, warranty or cleaning and I will answer.', gu: 'માફ કરશો, મારા પાસે તે ચોક્કસ માહિતી નથી. તમે કિંમત, ક્ષમતા, વોરંટી અથવા સફાઈ વિશે પૂછો.'}
+      {q: /brand|company|model/i, a: 'This model is from ABC Electronics, known for durability and advanced features.', gu: 'આ મોડેલ ABC ઇલેક્ટ્રોનિક્સનું છે, જે ટકાઉપણું અને અદ્યતન સુવિધાઓ માટે જાણીતું છે.'},
+      {q: /size|dimension|height|width|depth/i, a: 'The machine measures 85 cm in height, 60 cm in width and 55 cm in depth.', gu: 'આ મશીનની ઊંચાઈ 85 સેમી, પહોળાઈ 60 સેમી અને ઊંડાઈ 55 સેમી છે.'},
+      {q: /water|litre|consumption/i, a: 'This model consumes approximately 60 liters of water per full wash cycle.', gu: 'આ મોડેલ દરેક પૂર્ણ વોશ સાયકલમાં અંદાજે 60 લિટર પાણી વાપરે છે.'},
+      {q: /water|litre|consumption/i, a: 'This model consumes approximately 60 liters of water per full wash cycle.', gu: 'આ મોડેલ દરેક પૂર્ણ વોશ સાયકલમાં અંદાજે 60 લિટર પાણી વાપરે છે.'},
+      {q: /noise|sound|db|decibel/i, a: 'The machine operates at 52 dB during wash and 72 dB during spin — relatively quiet.', gu: 'આ મશીન ધોવાની પ્રક્રિયામાં 52 dB અને સ્પિન દરમિયાન 72 dB પર કાર્ય કરે છે — તુલનાત્મક રીતે શાંત છે.'},
+      {q: /delivery|install|setup/i, a: 'Free delivery and installation are provided within city limits.', gu: 'શહેરની અંદર મફત ડિલિવરી અને ઇન્સ્ટોલેશન આપવામાં આવે છે.'},
+      {q: /offer|discount|deal|sale/i, a: 'We currently have a festive discount available. Please check in-store for final price.', gu: 'હાલમાં તહેવારોમાં ડિસ્કાઉન્ટ ઉપલબ્ધ છે. અંતિમ કિંમત માટે સ્ટોરમાં તપાસો.'},
+      {q: /service|repair|support|help/i, a: 'We provide doorstep service and free checkups during warranty period.', gu: 'અમે વોરંટી સમયગાળા દરમિયાન ડોરસ્ટેપ સર્વિસ અને મફત ચેકઅપ્સ પ્રદાન કરીએ છીએ.'},
+      {q: /exchange|old machine|return/i, a: 'You can exchange your old appliance and get up to ₹5,000 off.', gu: 'તમે તમારું જૂનું ઉપકરણ એક્સચેન્જ કરી શકો છો અને ₹5,000 સુધીની છૂટ મેળવી શકો છો.'},
     ]
 
     function speak(text, lang='gu-IN'){
@@ -258,5 +268,6 @@
   </script>
 </body>
 </html>
+
 
 
