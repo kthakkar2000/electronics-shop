@@ -1,1 +1,83 @@
+<!-- FILE: product.html -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Product — Electronics Shop</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="container">
+<div class="card">
+<div class="top">
+<div class="gallery">
+<img id="mainImg" class="main-img" src="" alt="product image" />
+<div class="thumbs" id="thumbs"></div>
+</div>
+
+
+<div class="details">
+<h1 id="title">Product Title</h1>
+<div class="sku" id="sku">SKU: -</div>
+<div class="price" id="price">₹0</div>
+<div class="specs" id="specs"></div>
+
+
+<div class="cta">
+<button class="primary" id="askBtn">Ask about this product</button>
+<button class="secondary" id="buyBtn">Buy / Enquire</button>
+<div style="margin-left:8px;display:flex;align-items:center;gap:8px">
+<label class="small">Language</label>
+<select id="langSelect" style="padding:8px;border-radius:8px;border:1px solid #eee">
+<option value="en">English</option>
+<option value="gu">ગુજરાતી</option>
+</select>
+</div>
+</div>
+
+
+<div class="qr-wrap">
+<div>
+<div class="small">Scan to open this page</div>
+<img id="qrImg" src="" alt="QR code" />
+</div>
+<div class="small">
+<div>Share this QR with customers — or print & stick.</div>
+<div style="margin-top:8px;color:#444">URL: <span id="pageUrl" style="font-weight:600"></span></div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+
+<div class="desc card" style="margin-top:18px;padding:14px;">
+<strong>Product description</strong>
+<p id="description" style="margin-top:8px;color:#333"></p>
+</div>
+</div>
+</div>
+
+
+<!-- modal for voice/chat -->
+<div id="modalBackdrop" class="modal-backdrop">
+<div class="modal" role="dialog" aria-modal="true" aria-label="Product voice assistant">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3 style="margin:0">Product Assistant</h3>
+<button id="closeModal" class="secondary">Close</button>
+</div>
+<div style="margin-top:12px" class="small">Tap mic and speak. Assistant will reply aloud & show text.</div>
+<div id="chatArea" class="chat-area" aria-live="polite"></div>
+
+
+<div class="controls">
+<button id="micBtn" class="mic">🎤 Start Listening</button>
+<div id="recStatus" class="status">Idle</div>
+<div style="flex:1"></div>
+<input id="manualInput" placeholder="Or type a question..." style="padding:8px;border-radius:8px;border:1px solid #eee;width:45%" />
+<button id="sendBtn" class="primary">Send</button>
+</div>
+</html>
 
