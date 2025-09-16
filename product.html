@@ -1,83 +1,199 @@
-<!-- FILE: product.html -->
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Product — Electronics Shop</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Product — Electronics Shop</title>
+  <style>
+    :root{--accent:#0b6ef2;--muted:#6b7280;--card:#fff;--bg:#f3f4f6}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);margin:0;color:#111}
+    .container{max-width:980px;margin:28px auto;padding:20px}
+    .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 6px 18px rgba(12,12,14,0.06)}
+    .top{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
+    .gallery{flex:1 1 380px;min-width:260px}
+    .main-img{width:100%;height:360px;object-fit:contain;border-radius:10px;background:#fff;padding:12px;border:1px solid #eee}
+    .thumbs{display:flex;gap:8px;margin-top:10px}
+    .thumbs img{width:72px;height:56px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent}
+    .thumbs img.active{border-color:var(--accent)}
+    .details{flex:1 1 340px;min-width:260px}
+    h1{margin:0 0 8px;font-size:20px}
+    .sku{color:var(--muted);font-size:13px;margin-bottom:12px}
+    .price{font-size:22px;color:var(--accent);margin:6px 0}
+    .specs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}
+    .spec{background:#fbfcfe;border-radius:8px;padding:10px;font-size:14px}
+    .cta{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+    button.primary{background:var(--accent);color:#fff;border:none;padding:12px 16px;border-radius:10px;font-weight:600;cursor:pointer}
+    button.secondary{background:#fff;border:1px solid #e6e9ef;padding:12px 14px;border-radius:10px;cursor:pointer}
+    .qr-wrap{margin-top:14px;display:flex;gap:12px;align-items:center}
+    .qr-wrap img{width:120px;height:120px;border-radius:8px;background:#fff;padding:8px;border:1px solid #eee}
+    .desc{margin-top:18px;line-height:1.5;color:#222}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(10,12,15,0.45);display:none;align-items:center;justify-content:center;z-index:60}
+    .modal{background:#fff;border-radius:12px;width:95%;max-width:720px;padding:16px;box-shadow:0 20px 50px rgba(10,10,15,0.2)}
+    .chat-area{height:320px;overflow:auto;border:1px dashed #eee;border-radius:8px;padding:12px;background:#fbfdff}
+    .msg{margin:8px 0;display:flex;gap:10px}
+    .msg.me{justify-content:flex-end}
+    .bubble{max-width:78%;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #efefef}
+    .bubble.bot{background:#f1f7ff;border-color:#dbeeff}
+    .controls{display:flex;gap:8px;margin-top:12px;align-items:center}
+    .mic{background:linear-gradient(180deg,#fff,#f7fafc);border:1px solid #eee;padding:10px;border-radius:12px;cursor:pointer}
+    .status{color:var(--muted);font-size:13px;margin-left:8px}
+    .small{font-size:13px;color:var(--muted)}
+    @media(max-width:720px){.top{flex-direction:column}.main-img{height:260px}}
+  </style>
 </head>
 <body>
-<div class="container">
-<div class="card">
-<div class="top">
-<div class="gallery">
-<img id="mainImg" class="main-img" src="" alt="product image" />
-<div class="thumbs" id="thumbs"></div>
-</div>
+  <div class="container">
+    <div class="card">
+      <div class="top">
+        <div class="gallery">
+          <img id="mainImg" class="main-img" src="" alt="product image" />
+          <div class="thumbs" id="thumbs"></div>
+        </div>
 
+        <div class="details">
+          <h1 id="title">Product Title</h1>
+          <div class="sku" id="sku">SKU: -</div>
+          <div class="price" id="price">₹0</div>
+          <div class="specs" id="specs"></div>
 
-<div class="details">
-<h1 id="title">Product Title</h1>
-<div class="sku" id="sku">SKU: -</div>
-<div class="price" id="price">₹0</div>
-<div class="specs" id="specs"></div>
+          <div class="cta">
+            <button class="primary" id="askBtn">Ask about this product</button>
+            <button class="secondary" id="buyBtn">Buy / Enquire</button>
 
+            <div style="margin-left:8px;display:flex;align-items:center;gap:8px">
+              <label class="small">Language</label>
+              <select id="langSelect" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                <option value="en">English</option>
+                <option value="gu">ગુજરાતી</option>
+              </select>
+            </div>
+          </div>
 
-<div class="cta">
-<button class="primary" id="askBtn">Ask about this product</button>
-<button class="secondary" id="buyBtn">Buy / Enquire</button>
-<div style="margin-left:8px;display:flex;align-items:center;gap:8px">
-<label class="small">Language</label>
-<select id="langSelect" style="padding:8px;border-radius:8px;border:1px solid #eee">
-<option value="en">English</option>
-<option value="gu">ગુજરાતી</option>
-</select>
-</div>
-</div>
+          <div class="qr-wrap">
+            <div>
+              <div class="small">Scan to open this page</div>
+              <img id="qrImg" src="" alt="QR code" />
+            </div>
+            <div class="small">
+              <div>Share this QR with customers — or print & stick.</div>
+              <div style="margin-top:8px;color:#444">URL: <span id="pageUrl" style="font-weight:600"></span></div>
+            </div>
+          </div>
 
+        </div>
+      </div>
 
-<div class="qr-wrap">
-<div>
-<div class="small">Scan to open this page</div>
-<img id="qrImg" src="" alt="QR code" />
-</div>
-<div class="small">
-<div>Share this QR with customers — or print & stick.</div>
-<div style="margin-top:8px;color:#444">URL: <span id="pageUrl" style="font-weight:600"></span></div>
-</div>
-</div>
+      <div class="desc card" style="margin-top:18px;padding:14px;">
+        <strong>Product description</strong>
+        <p id="description" style="margin-top:8px;color:#333"></p>
+      </div>
+    </div>
+  </div>
 
+  <!-- modal for voice/chat -->
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Product voice assistant">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3 style="margin:0">Product Assistant</h3>
+        <button id="closeModal" class="secondary">Close</button>
+      </div>
+      <div style="margin-top:12px" class="small">Tap mic and speak. Assistant will reply aloud & show text.</div>
+      <div id="chatArea" class="chat-area" aria-live="polite"></div>
 
-</div>
-</div>
+      <div class="controls">
+        <button id="micBtn" class="mic">🎤 Start Listening</button>
+        <div id="recStatus" class="status">Idle</div>
+        <div style="flex:1"></div>
+        <input id="manualInput" placeholder="Or type a question..." style="padding:8px;border-radius:8px;border:1px solid #eee;width:45%" />
+        <button id="sendBtn" class="primary">Send</button>
+      </div>
+    </div>
+  </div>
 
+<script>
+/* ---------- Product data (single-file) ---------- */
+const products = {
+  "washing-machine-001":{
+    id:"washing-machine-001",
+    title:"SuperClean 7kg Front Load Washing Machine",
+    title_gu:"સુપરસ્ઈન 7 કિગ્રા ફ્રન્ટ લોડ વોશિંગ મશીન",
+    sku:"WM-SC-7000",
+    price:21990,
+    images:[
+      "https://placehold.co/800x600?text=Washing+Machine+1",
+      "https://placehold.co/800x600?text=Front+view",
+      "https://placehold.co/800x600?text=Control+panel"
+    ],
+    specs:{
+      "Capacity":"7 kg",
+      "Type":"Front Load",
+      "Energy Rating":"5 Star",
+      "Warranty":"2 years (product) + 5 years (motor)",
+      "Delivery":"4-7 business days"
+    },
+    specs_gu:{
+      "Capacity":"7 કિગ્રા",
+      "Type":"ફ્રન્ટ લોડ",
+      "Energy Rating":"5 સ્ટાર",
+      "Warranty":"2 વર્ષ (પ્રોડક્ટ) + 5 વર્ષ (મોટર)",
+      "Delivery":"4-7 બિઝનેસ દિવસ"
+    },
+    colors:["White","Silver","Grey"],
+    colors_gu:["સફેદ","સિલ્વર","ગ્રે"],
+    advantages:[
+      "Low energy consumption",
+      "Quick wash in 30 minutes",
+      "Gentle on fabrics",
+      "In-built heater for tough stains"
+    ],
+    advantages_gu:[
+      "ઓછી ઊર્જા ક્ષેપણ",
+      "30 મિનિટમાં ક્વિક વૉશ",
+      "કપડાંઓ ઉપર નરમ",
+      "કઠિન દાગ માટે બિલ્ટ-ઇન હીટર"
+    ],
+    description:"A reliable 7kg front load washing machine with modern features, quick cycles, and low power usage. Ideal for small to medium families.",
+    description_gu:"આ આધુનિક અને વિશ્વસનીય 7 કિગ્રા ફ્રન્ટ લોડ વોશિંગ મશીન છે. નાનું/મધ્યમ પરિવાર માટે યોગ્ય — ઝડપી સાયકલ અને ઓછા વીજ ઉપભોગ સાથે."
+  }
+};
 
-<div class="desc card" style="margin-top:18px;padding:14px;">
-<strong>Product description</strong>
-<p id="description" style="margin-top:8px;color:#333"></p>
-</div>
-</div>
-</div>
+/* ---------- helpers ---------- */
+function getQueryParam(name){ return new URL(location.href).searchParams.get(name); }
+const id = getQueryParam('id') || 'washing-machine-001';
+const product = products[id] || products['washing-machine-001'];
+let LANG = getQueryParam('lang') || 'en';
 
+/* DOM refs */
+const titleEl = document.getElementById('title');
+const skuEl = document.getElementById('sku');
+const priceEl = document.getElementById('price');
+const descEl = document.getElementById('description');
+const pageUrlEl = document.getElementById('pageUrl');
+const mainImg = document.getElementById('mainImg');
+const thumbs = document.getElementById('thumbs');
+const qrImg = document.getElementById('qrImg');
+const langSelect = document.getElementById('langSelect');
 
-<!-- modal for voice/chat -->
-<div id="modalBackdrop" class="modal-backdrop">
-<div class="modal" role="dialog" aria-modal="true" aria-label="Product voice assistant">
-<div style="display:flex;justify-content:space-between;align-items:center">
-<h3 style="margin:0">Product Assistant</h3>
-<button id="closeModal" class="secondary">Close</button>
-</div>
-<div style="margin-top:12px" class="small">Tap mic and speak. Assistant will reply aloud & show text.</div>
-<div id="chatArea" class="chat-area" aria-live="polite"></div>
+/* populate static fields */
+skuEl.textContent = 'SKU: ' + (product.sku || '-');
+priceEl.textContent = '₹' + (product.price ? product.price.toLocaleString('en-IN') : '0');
+pageUrlEl.textContent = location.origin + location.pathname + '?id=' + encodeURIComponent(product.id);
 
+/* gallery */
+mainImg.src = product.images && product.images[0] ? product.images[0] : '';
+thumbs.innerHTML = '';
+if(product.images && product.images.length){
+  product.images.forEach((src,i)=>{
+    const img = document.createElement('img'); img.src = src; img.alt='thumb';
+    if(i===0) img.classList.add('active');
+    img.onclick = ()=>{ mainImg.src = src; document.querySelectorAll('.thumbs img').forEach(t=>t.classList.remove('active')); img.classList.add('active'); }
+    thumbs.appendChild(img);
+  });
+}
 
-<div class="controls">
-<button id="micBtn" class="mic">🎤 Start Listening</button>
-<div id="recStatus" class="status">Idle</div>
-<div style="flex:1"></div>
-<input id="manualInput" placeholder="Or type a question..." style="padding:8px;border-radius:8px;border:1px solid #eee;width:45%" />
-<button id="sendBtn" class="primary">Send</button>
-</div>
-</html>
+/* QR */
+qrImg.src = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(location.origin + location.pathname + '?id=' + product.id + '&lang=' + LANG)}`;
 
+/* language UI */
+if(langSelect){
+  langS
