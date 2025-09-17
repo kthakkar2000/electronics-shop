@@ -1,278 +1,225 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kalindi — Product Voice Assistant</title>
-  <style>
-    :root{
-      --bg:#0f1723;
-      --card:#0b1220;
-      --muted:#9aa4b2;
-      --accent1:#7c3aed;
-      --accent2:#06b6d4;
-      --glass: rgba(255,255,255,0.03);
-      font-family: Inter, system-ui, -apple-system, Roboto, 'Segoe UI', Arial;
-    }
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #081018 100%);color:#e6eef6}
-    .container{max-width:460px;margin:18px auto;padding:16px}
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kalindi — Samsung washing machine 12kg</title>
+<style>
+:root{
+  --bg:#0f1723; --card:#0b1220; --muted:#9aa4b2;
+  --accent1:#7c3aed; --accent2:#06b6d4;
+  font-family:Inter,system-ui,-apple-system,Roboto,'Segoe UI',Arial;
+}
+html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#081018);color:#e6eef6}
+.container{max-width:460px;margin:18px auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.left{display:flex;gap:12px;align-items:center}
+.logo-img{width:56px;height:56px;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(2,6,23,0.6);background:#fff}
+.logo-img img{width:100%;height:100%;object-fit:contain}
+.title-wrap{line-height:1}
+.shop{font-size:15px;font-weight:700}
+.sub{font-size:12px;color:var(--muted)}
+.lang-switch{display:flex;gap:8px}
+.lang-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+.lang-btn.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;box-shadow:0 8px 22px rgba(124,58,237,0.12)}
 
-    header{display:flex;align-items:center;gap:12px;margin-bottom:12px;justify-content:space-between}
-    .left{display:flex;align-items:center;gap:12px}
-    .logo-img{width:56px;height:56px;border-radius:10px;overflow:hidden;flex-shrink:0;box-shadow:0 4px 14px rgba(2,6,23,0.6)}
-    .logo-img img{width:100%;height:100%;object-fit:contain;background:white}
-    .shop{font-size:16px;font-weight:700}
-    .sub{font-size:12px;color:var(--muted)}
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:12px;box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+.gallery{position:relative;overflow:hidden;border-radius:14px}
+.slides{display:flex;transition:transform .36s cubic-bezier(.2,.9,.2,1)}
+.slides img{width:100%;height:320px;object-fit:cover;flex-shrink:0;background:#071018}
+.dots{display:flex;gap:6px;position:absolute;left:12px;bottom:10px}
+.dot{width:9px;height:9px;border-radius:6px;background:rgba(255,255,255,0.06)}
+.dot.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 6px 18px rgba(6,182,212,0.08)}
 
-    /* language toggle */
-    .lang-switch{display:flex;gap:8px}
-    .lang-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
-    .lang-btn.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;box-shadow:0 6px 18px rgba(6,182,212,0.08)}
-
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-
-    .gallery{position:relative;overflow:hidden;border-radius:14px}
-    .slides{display:flex;transition:transform .36s cubic-bezier(.2,.9,.2,1)}
-    .slides img{width:100%;height:320px;object-fit:cover;flex-shrink:0}
-    .dots{display:flex;gap:6px;position:absolute;left:12px;bottom:10px}
-    .dot{width:9px;height:9px;border-radius:6px;background:rgba(0,0,0,0.35);backdrop-filter:blur(6px)}
-    .dot.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 4px 12px rgba(92,52,204,0.24)}
-
-    .bot{display:flex;gap:10px;align-items:center;margin-top:14px;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(124,58,237,0.08), rgba(6,182,212,0.05));}
-    .mic{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:18px;cursor:pointer}
-    .mic.listening{box-shadow:0 8px 30px rgba(124,58,237,0.28);transform:scale(1.03)}
-    .bot-info{flex:1}
-    .bot-title{font-weight:700}
-    .bot-sub{font-size:13px;color:var(--muted);margin-top:4px}
-    .transcript{margin-top:8px;font-size:14px;color:var(--muted);min-height:28px}
-
-    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-
-    @media (max-width:420px){
-      .slides img{height:260px}
-    }
-  </style>
+.product-name{font-weight:800;font-size:18px;margin-top:12px;text-align:center}
+.bot{display:flex;gap:12px;align-items:center;margin-top:14px;padding:12px;border-radius:12px;background:linear-gradient(90deg, rgba(124,58,237,0.05), rgba(6,182,212,0.03))}
+.mic{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:20px;cursor:pointer;flex-shrink:0}
+.mic.listening{box-shadow:0 12px 40px rgba(124,58,237,0.18);transform:scale(1.04)}
+.bot-info{flex:1}
+.bot-title{font-weight:800}
+.bot-sub{font-size:13px;color:var(--muted);margin-top:6px}
+.transcript{margin-top:8px;font-size:14px;color:var(--muted);min-height:26px}
+footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+@media (max-width:420px){ .slides img{height:260px} }
+.img-error{position:absolute;left:12px;top:12px;padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.48);color:#ffcccc;font-size:13px}
+</style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="left">
-        <div class="logo-img"><img src="assets/ktpl new logo.png" alt="Kalindi logo" /></div>
-        <div>
-          <div class="shop">Kalindi Tradelinks Pvt Ltd</div>
-          <div class="sub">Home Appliances • Washing Machine</div>
-        </div>
+<div class="container">
+  <header>
+    <div class="left">
+      <div class="logo-img"><img id="logoImg" src="assets/ktpl-new-logo.png" alt="Kalindi logo"/></div>
+      <div class="title-wrap">
+        <div class="shop">Kalindi Tradelinks Pvt Ltd</div>
+        <div class="sub">Home Appliances • Washing Machine</div>
       </div>
+    </div>
 
-      <div class="lang-switch" role="tablist" aria-label="Language switch">
-        <button class="lang-btn active" id="btn-en" role="tab" aria-selected="true">English</button>
-        <button class="lang-btn" id="btn-gu" role="tab" aria-selected="false">ગુજરાતી</button>
+    <div class="lang-switch" role="tablist" aria-label="Language">
+      <button class="lang-btn active" id="btn-en" aria-selected="true">English</button>
+      <button class="lang-btn" id="btn-gu" aria-selected="false">ગુજરાતી</button>
+    </div>
+  </header>
+
+  <main class="card">
+    <div class="gallery" id="gallery">
+      <div class="slides" id="slides">
+        <img src="assets/wm1.jpg" alt="product image 1" />
+        <img src="assets/wm2.jpg" alt="product image 2" />
+        <img src="assets/wm3.jpg" alt="product image 3" />
+        <img src="assets/wm4.jpg" alt="product image 4" />
+        <img src="assets/wm5.jpg" alt="product image 5" />
       </div>
-    </header>
-    <main class="card">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <div class="img-error" id="imgError" style="display:none">Image not found — check assets folder</div>
+    </div>
 
-      <div class="gallery" id="gallery" aria-hidden="false">
-        <div class="slides" id="slides">
-          <img src="assets/wm1.jpg" alt="product image 1" />
-          <img src="assets/wm2.jpg" alt="product image 2" />
-          <img src="assets/wm3.jpg" alt="product image 3" />
-          <img src="assets/wm4.jpg" alt="product image 4" />
-          <img src="assets/wm5.jpg" alt="product image 5" />
-        </div>
-        <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="product-name">Samsung washing machine 12kg</div>
+
+    <div class="bot" role="region" aria-label="Product voice assistant">
+      <div class="mic" id="mic" title="Tap to speak">🎙️</div>
+      <div class="bot-info">
+        <div class="bot-title" id="assistant-title">Product Voice Assistant</div>
+        <div class="bot-sub" id="assistant-sub">Select language, tap mic and ask about price, warranty, usage and more.</div>
+        <div class="transcript" id="transcript">Assistant ready. Select language and tap mic to ask.</div>
       </div>
+    </div>
+  </main>
 
-      <div class="bot" role="region" aria-label="Product voice assistant">
-        <div class="mic" id="mic" title="Tap to speak">🎙️</div>
-        <div class="bot-info">
-          <div class="bot-title" id="assistant-title">Product Voice Assistant</div>
-          <div class="bot-sub" id="assistant-sub">Tap the mic and ask about price, warranty, stock, cleaning or delivery.</div>
-          <div class="transcript" id="transcript">Assistant ready. Select language and tap mic to ask.</div>
-        </div>
-      </div>
+  <footer>© Kalindi Tradelinks Pvt Ltd</footer>
+</div>
 
-    </main>
+<script>
+/* ---- slider ---- */
+const slides = document.getElementById('slides'), imgs = slides.querySelectorAll('img'), dots = document.getElementById('dots');
+let idx = 0;
+function buildDots(){ dots.innerHTML=''; imgs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0 ? ' active':''); d.addEventListener('click',()=>{ idx=i; update(); }); dots.appendChild(d); }); }
+function update(){ slides.style.transform = `translateX(${-idx*100}%)`; Array.from(dots.children).forEach((d,i)=> d.classList.toggle('active', i===idx)); }
+buildDots();
+setInterval(()=>{ idx=(idx+1)%imgs.length; update(); },4500);
+/* swipe */
+let startX=null; const gallery=document.getElementById('gallery');
+gallery.addEventListener('touchstart', e=> startX = e.changedTouches[0].clientX);
+gallery.addEventListener('touchend', e=>{ if(startX===null) return; const endX = e.changedTouches[0].clientX; const dx = endX - startX; if(Math.abs(dx)>40){ if(dx<0) idx = Math.min(idx+1, imgs.length-1); else idx = Math.max(idx-1,0); update(); } startX=null; });
 
-    <footer>© Kalindi Tradelinks Pvt Ltd</footer>
-  </div>
+/* ---- language toggle ---- */
+let currentLang='en';
+const btnEn=document.getElementById('btn-en'), btnGu=document.getElementById('btn-gu');
+function setLang(lang){
+  currentLang=lang;
+  if(lang==='en'){ btnEn.classList.add('active'); btnEn.setAttribute('aria-selected','true'); btnGu.classList.remove('active'); btnGu.setAttribute('aria-selected','false'); document.getElementById('assistant-sub').textContent='Select language, tap mic and ask about price, warranty, usage and more.'; document.getElementById('assistant-title').textContent='Product Voice Assistant'; if(recognition) recognition.lang='en-IN'; }
+  else { btnGu.classList.add('active'); btnGu.setAttribute('aria-selected','true'); btnEn.classList.remove('active'); btnEn.setAttribute('aria-selected','false'); document.getElementById('assistant-sub').textContent='ભાષા પસંદ કરો, માઈક દબાવો અને કિંમત, વોરંટી, ઉપયોગ વગેરે વિશે પૂછો.'; document.getElementById('assistant-title').textContent='પ્રોડક્ટ વોઇસ આસિસ્ટન્ટ'; if(recognition) recognition.lang='gu-IN'; }
+}
+btnEn.addEventListener('click', ()=> setLang('en'));
+btnGu.addEventListener('click', ()=> setLang('gu'));
 
-  <script>
-    // SLIDER
-    const slides = document.getElementById('slides');
-    const images = slides.querySelectorAll('img');
-    const dots = document.getElementById('dots');
-    let idx = 0;
-    function buildDots(){
-      images.forEach((_,i)=>{
-        const d = document.createElement('div');
-        d.className = 'dot' + (i===0 ? ' active' : '');
-        d.addEventListener('click', ()=> { idx = i; update(); });
-        dots.appendChild(d);
-      });
-    }
-    function update(){
-      slides.style.transform = `translateX(${-idx * 100}%)`;
-      Array.from(dots.children).forEach((d,i)=> d.classList.toggle('active', i===idx));
-    }
-    buildDots();
-    setInterval(()=> { idx = (idx + 1) % images.length; update(); }, 4500);
+/* ---- canned replies ---- */
+const cannedEn = [
+  { q:/price|cost|₹|rupee/i, a:'The price of this model is ₹65,000.' },
+  { q:/stock|available/i, a:'This model has 4 pieces left in stock. EMI and exchange available in-store.' },
+  { q:/warrant(?:y|ies)|guarantee/i, a:'This product comes with a 2 year manufacturer warranty covering defects and parts.' },
+  { q:/usage|how to use|use of|how do i use|what is the use/i, a:'Use the front-load washing machine with recommended detergent, choose appropriate program and avoid overloading.' },
+  { q:/water|litre|liters|litra|consumption/i, a:'This model uses approximately 60 liters of water per full wash cycle.' },
+  { q:/colour|color|available color|available colours|which color/i, a:'Available colours: Pearl White and Graphite Silver (subject to stock). Please check in-store.' },
+  { q:/dimension|size|height|width|depth|dimension(s)?/i, a:'Approximate dimensions: Height 85 cm, Width 60 cm, Depth 55 cm.' },
+  { q:/electric|power|watt|unit|energy usage|consumption/i, a:'Power draw depends on mode; average electricity usage is around 1.2 - 1.5 kWh per full wash.' },
+  { q:/delivery|install|setup/i, a:'Free delivery and installation are provided within city limits.' },
+  { q:/service|repair|support/i, a:'We provide doorstep service and free checkups during warranty period.' },
+  { q:/exchange|old machine|trade/i, a:'You can exchange your old appliance and get up to ₹5,000 off.' },
+  { q:/.*/, a:'Sorry, I do not have that exact information. Try asking about price, usage, water consumption or warranty.' }
+];
+const cannedGu = [
+  { q:/કિંમત|દામ|રૂ|₹/i, a:'આ મોડેલની કિંમત રૂ. 65,000 છે.' },
+  { q:/સ્ટોક|ઉપલબ્ધ|મોજુдак/i, a:'સ્ટોરમાં ફક્ત 4 પીસ બાકી છે. EMI અને એક્સચેન્જ ઉપલબ્ધ છે.' },
+  { q:/વોરંટી|ગેરન્ટી/i, a:'આ ઉત્પાદન સાથે 2 વર્ષની ઉત્પાદક વોરંટી મળે છે.' },
+  { q:/ઉપયોગ|કેવી રીતે વાપરવું|કઈ રીતે ઉપયોગ|ઉપયોગ માટે/i, a:'ફ્રન્ટ-લોડ મશીનમાં સૂચિત ડિટર્જન્ટ વાપરો, યોગ્ય પ્રોગ્રામ પસંદ કરો અને ઓવરલોડ ન કરો.' },
+  { q:/પાણી|લિટર|પાણીનો ઉપયોગ|consumption/i, a:'દરેક પૂર્ણ વોશ સાયકલ માટે આશરે 60 લિટર પાણી વપરાય છે.' },
+  { q:/રંગ|કલર|પ્રાપ્ય રંગ|available color/i, a:'પ્રાપ્ય રંગો: પર્લ વ્હાઇટ અને ગ્રાફાઇટ સિલ્વર (સ્ટોક પર આધારિત).' },
+  { q:/માપ|ડાયમેન્શન|ઊંચાઈ|પહોળાઈ|ઊંડાઈ/i, a:'અંદાજે માપ: ઊંચાઈ 85 સે.મી., પહોળાઈ 60 સે.મી., ઊંડાઈ 55 સે.મી.' },
+  { q:/બિજળી|પાવર|વોટ|ઉર્જા|વિદ્યુત/i, a:'વિશિષ્ટ મોડ પર આધાર રાખે છે; કુલ વપરાશ આશરે 1.2 - 1.5 kWh છે.' },
+  { q:/ડિલિવરી|ઇન્સ્ટોલ|સેટ અપ/i, a:'શહેરની અંદર મફત ડિલિવરી અને ઇન્સ્ટોલેશન આપવામાં આવે છે.' },
+  { q:/સર્વિસ|મરામત|સપોર્ટ/i, a:'વોરંટી દરમિયાન ડોરસ્ટેપ સર્વિસ અને મફત ચેકઅપ ઉપલબ્ધ છે.' },
+  { q:/એક્સચેન્જ|જૂનુ|એક્સચેન્જ/i, a:'જૂનુ ઉપકરણ એક્સચેન્જ કરી ₹5,000 સુધીનો ડિસ્કાઉન્ટ મેળવો.' },
+  { q:/.*/, a:'માફ કરશો, મને તે ચોક્કસ માહિતી ઉપલબ્ધ નથી. કૃપા કરીને કિંમત, ઉપયોગ, પાણી ઉપયોગ અથવા વોરંટી વિશે પૂછો.' }
+];
 
-    // LANGUAGE TOGGLE
-    let currentLang = 'en'; // 'en' or 'gu'
-    const btnEn = document.getElementById('btn-en');
-    const btnGu = document.getElementById('btn-gu');
-    function setLang(lang){
-      currentLang = lang;
-      if(lang==='en'){
-        btnEn.classList.add('active'); btnEn.setAttribute('aria-selected','true');
-        btnGu.classList.remove('active'); btnGu.setAttribute('aria-selected','false');
-        document.getElementById('assistant-sub').textContent = 'Tap the mic and ask about price, warranty, stock, cleaning or delivery.';
-        document.getElementById('assistant-title').textContent = 'Product Voice Assistant';
-      } else {
-        btnGu.classList.add('active'); btnGu.setAttribute('aria-selected','true');
-        btnEn.classList.remove('active'); btnEn.setAttribute('aria-selected','false');
-        document.getElementById('assistant-sub').textContent = 'માઇક દબાવો અને કિંમત, વોરંટી, સ્ટોક, અથવા ડિલિવરી વિશે પૂછો.';
-        document.getElementById('assistant-title').textContent = 'પ્રોડક્ટ વોઇસ આસિસ્ટન્ટ';
-      }
+/* ---- speech synth + WebAudio tap ---- */
+function speak(text, lang='en-IN'){
+  if(!('speechSynthesis' in window)){ document.getElementById('transcript').textContent = text; return; }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; u.rate = 1;
+  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+}
+let audioCtx=null;
+function playTap(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = audioCtx.currentTime;
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type='sine';
+    o.frequency.setValueAtTime(1000, now);
+    g.gain.setValueAtTime(0, now);
+    g.gain.linearRampToValueAtTime(0.12, now + 0.001);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(now); o.stop(now + 0.14);
+  }catch(e){ console.warn('tap sound blocked', e && e.message); }
+}
 
-      // if recognition exists, update recognition.lang when restarted
-      if(recognition) recognition.lang = (lang==='en' ? 'en-IN' : 'gu-IN');
-    }
-    btnEn.addEventListener('click', ()=> setLang('en'));
-    btnGu.addEventListener('click', ()=> setLang('gu'));
+/* ---- recognition ---- */
+let recognition=null;
+if(window.SpeechRecognition || window.webkitSpeechRecognition){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-IN';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  recognition.onresult = (e) => {
+    const t = e.results[0][0].transcript;
+    document.getElementById('transcript').textContent = (currentLang==='en' ? 'You: ' : 'તમે: ') + t;
+    handleQuery(t);
+  };
+  recognition.onend = () => document.getElementById('mic').classList.remove('listening');
+  recognition.onerror = (ev) => { document.getElementById('transcript').textContent = 'Error: ' + ev.error; document.getElementById('mic').classList.remove('listening'); };
+}
 
-    // CANNED RESPONSES (English)
-    const cannedEn = [
-      { q:/price|cost|₹|rupee/i, a:'The price of this model is sixty five thousand rupees only.' },
-      { q:/stock|available/i, a:'This model has only 4 pieces left in stock. We also offer EMI and exchange options in-store.' },
-      { q:/warrant(?:y|ies)|guarantee/i, a:'This product comes with a two year manufacturer warranty covering defects and parts.' },
-      { q:/capacity|kg|weight/i, a:'The machine has a 12 kilogram capacity — suitable for medium families.' },
-      { q:/rpm|spin|speed/i, a:'Maximum spin speed is 1200 RPM which helps remove more water and reduce drying time.' },
-      { q:/energy|star/i, a:'This is a 5-star energy rated appliance — very efficient on power consumption.' },
-      { q:/how to clean|clean|care/i, a:'Use a mild detergent, run monthly drum clean cycle and wipe the door seal to avoid residue.' },
-      { q:/brand|company|model/i, a:'This model is from a reputed brand known for durability and advanced features.' },
-      { q:/size|dimension|height|width|depth/i, a:'The machine measures about 85 cm in height, 60 cm in width and 55 cm in depth.' },
-      { q:/water|litre|consumption/i, a:'This model consumes approximately 60 liters of water per full wash cycle.' },
-      { q:/noise|sound|db|decibel/i, a:'The machine operates quietly: around 52 dB during wash and 72 dB during spin.' },
-      { q:/delivery|install|setup/i, a:'Free delivery and installation are provided within city limits.' },
-      { q:/offer|discount|deal|sale/i, a:'We currently have a festive discount available. Please check in-store for final price.' },
-      { q:/service|repair|support|help/i, a:'We provide doorstep service and free checkups during warranty period.' },
-      { q:/exchange|old machine|return/i, a:'You can exchange your old appliance and get up to ₹5,000 off.' },
-      { q:/.*/, a:'Sorry, I do not have that exact information. You can ask about price, capacity, warranty or cleaning and I will answer.' }
-    ];
+/* ---- query handling ---- */
+function handleQuery(text){
+  const q = text.toLowerCase();
+  if(currentLang === 'en'){
+    const f = cannedEn.find(c => c.q.test(q)) || cannedEn[cannedEn.length-1];
+    const ans = f.a;
+    document.getElementById('transcript').textContent = 'Assistant: ' + ans;
+    speak(ans, 'en-IN');
+  } else {
+    const f = cannedGu.find(c => c.q.test(q)) || cannedGu[cannedGu.length-1];
+    const ans = f.a;
+    document.getElementById('transcript').textContent = 'સહાયક: ' + ans;
+    speak(ans, 'gu-IN');
+  }
+}
 
-    // CANNED RESPONSES (Gujarati) — regex matches common Gujarati words
-    const cannedGu = [
-      { q:/કિંમત|દામ|રૂ|₹/i, a:'આ મોડેલની કિંમત રૂ. 65,000 છે. સ્ટોરમાં EMI અને એક્સચેન્જ ઉપલબ્ધ છે.' },
-      { q:/સ્ટોક|ઉપલબ્ધ|મોજુдак/i, a:'આ મોડેલના સ્ટોકમાં ફક્ત 4 પીસ બાકી છે. સ્ટોરમાં EMI અને એક્સચેન્જ ઉપલબ્ધ છે.' },
-      { q:/વોરંટી|ગેરન્ટી|ઝરુર|વોરંટી/i, a:'આ ઉત્પાદન સાથે 2 વર્ષની արտադրક વોરંટી મળે છે જે ખામી અને ભાગોને ઢકે છે.' },
-      { q:/ક્ષમતા|કિગ્રા|કિલોગ્રામ|કિગ્રા/i, a:'આ મશીનની ક્ષમતા 12 કિગ્રા છે — મધ્યમ કદની પરિવાર માટે યોગ્ય.' },
-      { q:/સ્પિન|RPM|સ્પીડ|ગતિ/i, a:'મહત્તમ સ્પિન સ્પીડ 1200 RPM છે જે વધુ પાણી દૂર કરવામાં મદદ કરે છે.' },
-      { q:/એનર્જી|સ્ટાર|energy/i, a:'આ 5-સ્ટાર એનર્જી રેટેડ ઉપકરણ છે — વીજ ખર્ચમાં અસરકારક.' },
-      { q:/સફાઈ|સાફ|ક્લીન|how to clean/i, a:'હળવો ડિટર્જન્ટ વાપરો, માસિક ડ્રમ ક્લીન ચલાવો અને ડોર સિલ સાફ રાખો.' },
-      { q:/બ્રાન્ડ|કંપની|મોડેલ/i, a:'આ મોડેલ પ્રખ્યાત બ્રાન્ડનું છે જે કડકાઈ અને સവിശેષતાઓ માટે જાણીતું છે.' },
-      { q:/મેપ|માપ|ઉંચાઈ|પહોળાઈ|ઊંડાઈ|ડાયમેન્શન/i, a:'મશીનની લંબાઈ અંદાજે 85 સેમી, પહોળાઈ 60 સેમી અને ઊંડાઈ 55 સેમી છે.' },
-      { q:/પાણી|લિટર|પાણીનો ઉપયોગ/i, a:'દરેક પૂર્ણ વોશ સાયકલ માટે આશરે 60 લિટર પાણી વપરાય છે.' },
-      { q:/શોર|સમાચાર|ડેસિબલ|dB/i, a:'ધોવાના સમયે આશરે 52 dB અને સ્પિન સમયે 72 dB લાગે છે — સામાન્ય રીતે શાંત.' },
-      { q:/ડિલિવરી|ઇન્સ્ટોલ|સેટઅપ/i, a:'શહેરની અંદર મફત ડિલિવરી અને ઇન્સ્ટોલેશન આપવામાં આવે છે.' },
-      { q:/ડિસ્કાઉન્ટ|છૂટ|ડિલ|સેલ/i, a:'હાલમાં તહેવારોમાં ડિસ્કાઉન્ટ ઉપલબ્ધ છે. અંતિમ કિંમત માટે સ્ટોરમાં તપાસો.' },
-      { q:/સર્વિસ|રિપેર|સપોર્ટ|મદદ/i, a:'વોરંટી સમયગાળા દરમિયાન ડોરસ્ટેપ સર્વિસ અને મફત ચેકઅપ આપવામાં આવે છે.' },
-      { q:/એક્સચેન્જ|જૂનું|એક્સ|ચેન્જ/i, a:'તમે તમારું જૂનું ઉપકરણ એક્સચેન્જ કરીને ₹5,000 સુધીનો ડિસ્કાઉન્ટ મેળવી શકો છો.' },
-      { q:/.*/, a:'માફ કરશો, મારી પાસે તે ચોક્કસ માહિતી ઉપલબ્ધ નથી. કૃપા કરીને કિંમત, ક્ષમતા, વોરંટી અથવા સફાઈ વિશે પૂછો.' }
-    ];
+/* ---- mic click ---- */
+const mic = document.getElementById('mic');
+mic.addEventListener('click', ()=>{
+  playTap();
+  if(!recognition){
+    const q = prompt(currentLang==='en' ? 'Type your question:' : 'તમારો પ્રશ્ન અહીં ટાઈપ કરો:');
+    if(q) handleQuery(q); return;
+  }
+  recognition.lang = (currentLang==='en' ? 'en-IN' : 'gu-IN');
+  try{
+    mic.classList.add('listening');
+    document.getElementById('transcript').textContent = currentLang==='en' ? 'Listening...' : 'શુણવામાં આવી રહ્યું છે...';
+    recognition.start();
+  }catch(e){ mic.classList.remove('listening'); console.warn(e && e.message); }
+});
+mic.tabIndex = 0; mic.addEventListener('keydown', e=> { if(e.key==='Enter' || e.key===' ') e.target.click(); });
 
-    // SPEECH FUNCTIONS
-    function speak(text, langTag){
-      if(!('speechSynthesis' in window)) {
-        document.getElementById('transcript').textContent = text;
-        return;
-      }
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = langTag;
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
-    }
+/* ---- initial state ---- */
+setLang('en'); // defined earlier when building btn handlers
 
-    // MATCH QUERY BASED ON CURRENT LANGUAGE
-    function matchAndReply(text){
-      const q = text.toLowerCase();
-      if(currentLang === 'en'){
-        const found = cannedEn.find(c => c.q.test(q)) || cannedEn[cannedEn.length-1];
-        const ans = found.a;
-        document.getElementById('transcript').textContent = 'Assistant: ' + ans;
-        speak(ans, 'en-IN');
-      } else {
-        const found = cannedGu.find(c => c.q.test(q)) || cannedGu[cannedGu.length-1];
-        const ans = found.a;
-        document.getElementById('transcript').textContent = 'સહાયક: ' + ans;
-        speak(ans, 'gu-IN');
-      }
-    }
-
-    // RECOGNITION SETUP
-    let recognition = null;
-    if(window.SpeechRecognition || window.webkitSpeechRecognition){
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SR();
-      recognition.lang = 'en-IN';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      recognition.onresult = (e) => {
-        const text = e.results[0][0].transcript;
-        document.getElementById('transcript').textContent = (currentLang==='en' ? 'You: ' : 'તમે: ') + text;
-        matchAndReply(text);
-      };
-      recognition.onend = () => {
-        document.getElementById('mic').classList.remove('listening');
-      };
-      recognition.onerror = (ev) => {
-        document.getElementById('transcript').textContent = 'Error: ' + ev.error;
-        document.getElementById('mic').classList.remove('listening');
-      };
-    }
-
-    // MIC BUTTON HANDLER
-    document.getElementById('mic').addEventListener('click', () => {
-      const m = document.getElementById('mic');
-      if(!recognition){
-        const q = prompt(currentLang==='en' ? 'Type your question:' : 'તમારો પ્રશ્ન અહીં ટાઈપ કરો:');
-        if(q) matchAndReply(q);
-        return;
-      }
-      // set recognition language based on toggle
-      recognition.lang = (currentLang === 'en') ? 'en-IN' : 'gu-IN';
-      try {
-        m.classList.add('listening');
-        document.getElementById('transcript').textContent = currentLang==='en' ? 'Listening...' : 'શુણાવ્યો...';
-        recognition.start();
-      } catch(e){
-        m.classList.remove('listening');
-      }
-    });
-
-    // Accessibility: allow Enter/Space to trigger mic
-    document.getElementById('mic').tabIndex = 0;
-    document.getElementById('mic').addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') e.target.click();
-    });
-
-    // jpg fallback: if browser doesn't support jpg, swap to jpg
-    (function(){
-      const testImg = new Image();
-      testImg.onload = ()=>{};
-      testImg.onerror = ()=>{
-        document.querySelectorAll('img').forEach(img=>{
-          img.src = img.src.replace('.jpg', '.jpg');
-        });
-      };
-      testImg.src = 'data:image/jpg;base64,AAAA';
-    })();
-
-    // Initial language set (ensures recognition.lang updated if recognition exists)
-    setLang('en');
-
-    // small safety: pre-load images to avoid flicker
-    images.forEach(i => { const img = new Image(); img.src = i.src; });
-  </script>
+</script>
 </body>
 </html>
