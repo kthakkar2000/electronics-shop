@@ -72,16 +72,17 @@
 
     <main class="card">
 
-      <div class="gallery" id="gallery" aria-hidden="false">
-        <div class="slides" id="slides">
-          <img src="assets/wm1.jpg" alt="product image 1" />
-          <img src="assets/wm2.jpg" alt="product image 2" />
-          <img src="assets/wm3.jpg" alt="product image 3" />
-          <img src="assets/wm4.jpg" alt="product image 4" />
-          <img src="assets/wm5.jpg" alt="product image 5" />
-        </div>
-        <div class="dots" id="dots"  aria-hidden="true" ></div>
-      </div>
+      <main class="card">
+<div class="gallery" id="gallery">
+<div class="slides" id="slides">
+<img src="assets/wm1.jpg" alt="product image 1" />
+<img src="assets/wm2.jpg" alt="product image 2" />
+<img src="assets/wm3.jpg" alt="product image 3" />
+<img src="assets/wm4.jpg" alt="product image 4" />
+<img src="assets/wm5.jpg" alt="product image 5" />
+</div>
+<div class="dots" id="dots"></div>
+</div>
 
       <div class="bot" role="region" aria-label="Product voice assistant">
         <div class="mic" id="mic" title="Tap to speak">🎙️</div>
@@ -257,16 +258,16 @@
       if(e.key === 'Enter' || e.key === ' ') e.target.click();
     });
 
-    // AVIF fallback: if browser doesn't support avif, swap to jpg
+    // jpg fallback: if browser doesn't support jpg, swap to jpg
     (function(){
       const testImg = new Image();
       testImg.onload = ()=>{};
       testImg.onerror = ()=>{
         document.querySelectorAll('img').forEach(img=>{
-          img.src = img.src.replace('.avif', '.jpg');
+          img.src = img.src.replace('.jpg', '.jpg');
         });
       };
-      testImg.src = 'data:image/avif;base64,AAAA';
+      testImg.src = 'data:image/jpg;base64,AAAA';
     })();
 
     // Initial language set (ensures recognition.lang updated if recognition exists)
