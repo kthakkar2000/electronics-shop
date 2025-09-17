@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* canned replies (EN/ GU) — same as before, truncated for brevity here (kept full in original) */
   const cannedEn = [
-    { q:/price|cost|₹|rupee/i, a:'Typical retail price for recent Samsung 12 kg front load models starts around ₹63,000–₹70,000 depending on model and offers.' },
+    { q:/price|cost|₹|rupee/i, a:'This model costs ₹65,000. For offers and EMI options, please ask the store person.' },
     { q:/usage|how to use|use of|how do i use|what is the use/i, a:'Load items evenly, use recommended detergent, select the program suitable for the load, and avoid overloading.' },
     { q:/water|litre|consumption/i, a:'This model uses approximately 50–70 liters of water per full wash depending on program.' },
     { q:/colour|color|available color|which color/i, a:'Common colours: Pearl White, Graphite/Black, Silver - availability varies by model.' },
@@ -138,10 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
     { q:/other brands|better than other brands/i, a:`Samsung offers features like EcoBubble/AI Wash and SmartThings — exact advantage depends on the specific models compared.` },
     { q:/programs|quick wash|eco wash/i, a:'Yes — many models include Quick Wash, Eco and specialized programs for delicates and bedding.' },
     { q:/heavy loads|blankets|curtains/i, a:'Yes — 12 kg capacity is suitable for heavy/bulky items like blankets and curtains.' },
-    { q:/.*/, a:'Sorry, I do not have that exact information. Ask about price, usage, water consumption, warranty or features.' }
+    { q:/.*/, a:'Sorry, I do not have that exact information. Ask about price, usage, water consumption, warranty or features.' },
+    { q:/stock|available|availablity/i, a:'Only 3 pieces left in stock. Hurry! For EMI and exchange offers, please ask the store person.'}
   ];
   const cannedGu = [
-    { q:/કિંમત|દામ|રૂ|₹/i, a:'લાભારો: નજીકના ભાવ સામાન્ય રીતે ₹63,000–₹70,000 શરૂ થાય છે.' },
+    { q:/કિંમત|દામ|રૂ|₹/i, a:'આ મોડલની કિંમત ₹65,000 છે. ઑફર્સ અને EMI વિકલ્પો માટે કૃપા કરીને સ્ટોર પર્સનને પૂછો.' },
     { q:/ઉપયોગ|કેવી રીતે વાપરવું/i, a:'સામાન્ય રીતે સમાન રીતે લોડ કરો, સૂચિત ડિટર્જન્ટ વાપરો અને ઓવરલોડ ટાળો.' },
     { q:/પાણી|લિટર|ઉપયોગ/i, a:'ભરના વોશ માટે લગભગ 50–70 લિટર પાણી વપરાય છે (પ્રોગ્રામ પર આધાર).' },
     { q:/રંગ|ઉપલબ્ધ રંગ/i, a:'પ્રધાન રંગો: પર્લ વ્હાઇટ, ગ્રાફાઇટ/બ્લેક, સિલ્વર — મોડેલ અને સ્ટોક પર આધાર.' },
@@ -152,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { q:/લાભ|શા માટે ખરીદવું/i, a:'લાભ: મોટી ક્ષમતા, ઇનવર્ટર મોટર, એડવાન્સ્ડ વોશ ટેક, ઊર્જા બચત અને સ્માર્ટ ફીચર્સ.' },
     { q:/નાની ક્ષમતા|કેવી રીતે નાની/i, a:'12 kg એક જ વખતમાં મોટી વસ્તુઓ ધોઈ શકશે જેથી બધા ઓછા સાયકલમાં થાય.' },
     { q:/.*/, a:'માફ કરશો, મને તે ચોક્કસ માહિતી ઉપલબ્ધ નથી. કૃપા કરીને ફરીથી પ્રશ્ન પૂછો.' }
+    { q:/હાલમાં સ્ટોકમાં છે?|કેટલા પીસ સ્ટોકમાં છે?|આ મોડલ હાલ દુકાનમાં છે?/i, a:'માત્ર 3 પીસ સ્ટોકમાં બાકી છે. જલ્દી કરો! EMI અને એક્સચેન્જ ઑફર્સ માટે કૃપા કરીને સ્ટોર પર્સનને પૂછો.' },
+  
   ];
 
   /* speech synth + tap sound */
