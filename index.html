@@ -14,10 +14,10 @@ html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#0810
 .container{max-width:460px;margin:18px auto;padding:16px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
 .left{display:flex;gap:12px;align-items:center}
-.logo-img{width:56px;height:56px;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(2,6,23,0.6);background:#fff}
+.logo-img{width:72px;height:72px;border-radius:12px;overflow:hidden;box-shadow:0 8px 26px rgba(2,6,23,0.6);background:#fff;flex-shrink:0}
 .logo-img img{width:100%;height:100%;object-fit:contain}
 .title-wrap{line-height:1}
-.shop{font-size:15px;font-weight:700}
+.shop{font-size:16px;font-weight:800}
 .sub{font-size:12px;color:var(--muted)}
 .lang-switch{display:flex;gap:8px}
 .lang-btn{padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
@@ -31,17 +31,18 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
 .dot{width:9px;height:9px;border-radius:6px;background:rgba(255,255,255,0.06)}
 .dot.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));box-shadow:0 6px 18px rgba(6,182,212,0.08)}
 
-.product-name{font-weight:800;font-size:18px;margin-top:12px;text-align:center}
+.product-name{font-weight:900;font-size:18px;margin-top:12px;text-align:center}
 .bot{display:flex;gap:12px;align-items:center;margin-top:14px;padding:12px;border-radius:12px;background:linear-gradient(90deg, rgba(124,58,237,0.05), rgba(6,182,212,0.03))}
 .mic{width:56px;height:56px;border-radius:12px;background:linear-gradient(180deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:20px;cursor:pointer;flex-shrink:0}
 .mic.listening{box-shadow:0 12px 40px rgba(124,58,237,0.18);transform:scale(1.04)}
 .bot-info{flex:1}
 .bot-title{font-weight:800}
 .bot-sub{font-size:13px;color:var(--muted);margin-top:6px}
-.transcript{margin-top:8px;font-size:14px;color:var(--muted);min-height:26px}
+.transcript{margin-top:8px;font-size:14px;color:var(--muted);min-height:46px}
 footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
 @media (max-width:420px){ .slides img{height:260px} }
 .img-error{position:absolute;left:12px;top:12px;padding:8px 10px;border-radius:8px;background:rgba(0,0,0,0.48);color:#ffcccc;font-size:13px}
+.small-muted{color:var(--muted);font-size:13px;margin-top:6px}
 </style>
 </head>
 <body>
@@ -75,6 +76,7 @@ footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
     </div>
 
     <div class="product-name">Samsung washing machine 12kg</div>
+    <div class="small-muted" style="text-align:center">Tap the mic and ask. Responses available in English and Gujarati.</div>
 
     <div class="bot" role="region" aria-label="Product voice assistant">
       <div class="mic" id="mic" title="Tap to speak">🎙️</div>
@@ -90,135 +92,181 @@ footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
 </div>
 
 <script>
-/* ---- slider ---- */
+/* ===== slider ===== */
 const slides = document.getElementById('slides'), imgs = slides.querySelectorAll('img'), dots = document.getElementById('dots');
 let idx = 0;
 function buildDots(){ dots.innerHTML=''; imgs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0 ? ' active':''); d.addEventListener('click',()=>{ idx=i; update(); }); dots.appendChild(d); }); }
 function update(){ slides.style.transform = `translateX(${-idx*100}%)`; Array.from(dots.children).forEach((d,i)=> d.classList.toggle('active', i===idx)); }
-buildDots();
-setInterval(()=>{ idx=(idx+1)%imgs.length; update(); },4500);
+buildDots(); setInterval(()=>{ idx=(idx+1)%imgs.length; update(); },4500);
+
 /* swipe */
 let startX=null; const gallery=document.getElementById('gallery');
 gallery.addEventListener('touchstart', e=> startX = e.changedTouches[0].clientX);
 gallery.addEventListener('touchend', e=>{ if(startX===null) return; const endX = e.changedTouches[0].clientX; const dx = endX - startX; if(Math.abs(dx)>40){ if(dx<0) idx = Math.min(idx+1, imgs.length-1); else idx = Math.max(idx-1,0); update(); } startX=null; });
 
-/* ---- language toggle ---- */
-let currentLang='en';
-const btnEn=document.getElementById('btn-en'), btnGu=document.getElementById('btn-gu');
+/* ===== language toggle ===== */
+let currentLang = 'en';
+const btnEn = document.getElementById('btn-en'), btnGu = document.getElementById('btn-gu');
 function setLang(lang){
-  currentLang=lang;
-  if(lang==='en'){ btnEn.classList.add('active'); btnEn.setAttribute('aria-selected','true'); btnGu.classList.remove('active'); btnGu.setAttribute('aria-selected','false'); document.getElementById('assistant-sub').textContent='Select language, tap mic and ask about price, warranty, usage and more.'; document.getElementById('assistant-title').textContent='Product Voice Assistant'; if(recognition) recognition.lang='en-IN'; }
-  else { btnGu.classList.add('active'); btnGu.setAttribute('aria-selected','true'); btnEn.classList.remove('active'); btnEn.setAttribute('aria-selected','false'); document.getElementById('assistant-sub').textContent='ભાષા પસંદ કરો, માઈક દબાવો અને કિંમત, વોરંટી, ઉપયોગ વગેરે વિશે પૂછો.'; document.getElementById('assistant-title').textContent='પ્રોડક્ટ વોઇસ આસિસ્ટન્ટ'; if(recognition) recognition.lang='gu-IN'; }
+  currentLang = lang;
+  if(lang==='en'){
+    btnEn.classList.add('active'); btnEn.setAttribute('aria-selected','true'); btnGu.classList.remove('active'); btnGu.setAttribute('aria-selected','false');
+    document.getElementById('assistant-sub').textContent = 'Select language, tap mic and ask about price, warranty, usage and more.';
+    document.getElementById('assistant-title').textContent = 'Product Voice Assistant';
+    if(recognition) recognition.lang = 'en-IN';
+  } else {
+    btnGu.classList.add('active'); btnGu.setAttribute('aria-selected','true'); btnEn.classList.remove('active'); btnEn.setAttribute('aria-selected','false');
+    document.getElementById('assistant-sub').textContent = 'ભાષા પસંદ કરો, માઈક દબાવો અને કિંમત, વોરંટી, ઉપયોગ વગેરે વિશે પૂછો.';
+    document.getElementById('assistant-title').textContent = 'પ્રોડક્ટ વોઇસ આસિસ્ટન્ટ';
+    if(recognition) recognition.lang = 'gu-IN';
+  }
 }
 btnEn.addEventListener('click', ()=> setLang('en'));
 btnGu.addEventListener('click', ()=> setLang('gu'));
 
-/* ---- canned replies ---- */
+/* ===== canned replies (informed by Samsung product pages & retailers) =====
+   — these answers are written to be concise for voice replies.
+   — full detailed description is returned only when user asks "describe" or "model description"
+*/
 const cannedEn = [
-  { q:/price|cost|₹|rupee/i, a:'The price of this model is ₹65,000.' },
-  { q:/stock|available/i, a:'This model has 4 pieces left in stock. EMI and exchange available in-store.' },
-  { q:/warrant(?:y|ies)|guarantee/i, a:'This product comes with a 2 year manufacturer warranty covering defects and parts.' },
-  { q:/usage|how to use|use of|how do i use|what is the use/i, a:'Use the front-load washing machine with recommended detergent, choose appropriate program and avoid overloading.' },
-  { q:/water|litre|liters|litra|consumption/i, a:'This model uses approximately 60 liters of water per full wash cycle.' },
-  { q:/colour|color|available color|available colours|which color/i, a:'Available colours: Pearl White and Graphite Silver (subject to stock). Please check in-store.' },
-  { q:/dimension|size|height|width|depth|dimension(s)?/i, a:'Approximate dimensions: Height 85 cm, Width 60 cm, Depth 55 cm.' },
-  { q:/electric|power|watt|unit|energy usage|consumption/i, a:'Power draw depends on mode; average electricity usage is around 1.2 - 1.5 kWh per full wash.' },
-  { q:/delivery|install|setup/i, a:'Free delivery and installation are provided within city limits.' },
-  { q:/service|repair|support/i, a:'We provide doorstep service and free checkups during warranty period.' },
-  { q:/exchange|old machine|trade/i, a:'You can exchange your old appliance and get up to ₹5,000 off.' },
-  { q:/.*/, a:'Sorry, I do not have that exact information. Try asking about price, usage, water consumption or warranty.' }
+  { q:/price|cost|₹|rupee/i, a:'Typical retail price for recent Samsung 12 kg front load models starts around ₹63,000–₹70,000 depending on model and offers.' },
+  { q:/stock|available/i, a:'Stock varies by store. Please check in-store or call us — currently a few pieces may be available.' },
+  { q:/describe|description|details|all description|model description/i, a:
+    `Samsung 12 kg front-load washers combine AI-powered wash optimisation (AI Wash / Bespoke AI or EcoBubble depending on model), large 12 kg capacity, digital inverter motor for durability and efficiency, quick/eco wash programmes, steam/hygiene cycles, and Wi-Fi / SmartThings app support on some models. Many models support higher spin speeds and energy-saving features.` },
+  { q:/usage|how to use|how do i use|use of/i, a:'Load items evenly, use recommended detergent, select the program suitable for the load (cotton, synthetics, heavy, quick), and avoid overloading to get best results.' },
+  { q:/water|litre|consumption/i, a:'Typical water usage is around 50–70 litres per full wash depending on program — eco programs use less.' },
+  { q:/colour|color|available color|which color/i, a:'Common colours offered include Pearl White, Graphite/Black and Silver — availability depends on the model and stock.' },
+  { q:/dimension|size|height|width|depth/i, a:'Typical dimensions are roughly H 85 cm × W 60 cm × D 55–70 cm depending on the exact model (check label for precise numbers).' },
+  { q:/electric|power|watt|energy|consumption/i, a:'Power depends on mode; average electricity per full wash is roughly 1.2–1.5 kWh on regular cycles. Eco/AI modes reduce energy use.' },
+  { q:/dryer|dryer function|dry function/i, a:'Some Samsung models are washer-dryers (combined) — many 12kg front-load washers do not include a dryer; check model spec for dryer capability.' },
+  { q:/inverter|inverter motor|digital inverter/i, a:'Most modern Samsung front-load machines use a Digital Inverter Motor for lower vibration, improved efficiency and longer life.' },
+  { q:/family|how many family|suitable for/i, a:'12 kg capacity is suitable for medium to large families (4+ members) and handles bedding, blankets and larger loads comfortably.' },
+  { q:/display|digital|wifi|smart/i, a:'Many recent Samsung 12kg models include a digital display and some include Wi-Fi/SmartThings for remote control; features vary by exact model.' },
+  { q:/advantages|why should i buy|benefit/i, a:
+    `Advantages: large 12kg capacity for bigger loads, efficient Digital Inverter motor, advanced wash technologies (AI or EcoBubble), energy-efficient cycles, special programs (quick/eco/steam), and smart features on selected models.` },
+  { q:/smaller|instead of a smaller capacity|why not smaller/i, a:
+    `A 12kg handles large or bulky items (blankets, curtains) in fewer cycles—saving time and energy compared to doing several smaller loads on a lower capacity machine.` },
+  { q:/better than other brands|how is it better than other brands/i, a:
+    `Samsung differentiates with features like EcoBubble / AI Wash, strong service network, and SmartThings integration on select models; exact comparisons depend on models compared.` },
+  { q:/programs|quick wash|eco wash|special wash/i, a:'Yes — many models include Quick Wash, Eco/Energy modes, Hygiene/Steam cycles and program presets for delicates, bedding and more.' },
+  { q:/heavy loads|blankets|curtains/i, a:'Yes — 12 kg capacity is designed to handle heavy/bulky loads like blankets and curtains more easily than smaller machines.' },
+  { q:/feedback|reviews|customer review|customer feedback/i,
+    a:`Customer feedback (sample):
+      1) \"Great cleaning, gentle on clothes.\" 
+      2) \"Large drum — perfect for blankets.\" 
+      3) \"Smart features helpful, but Wi-Fi setup took time.\" 
+      4) \"Low vibration and quiet operation.\"` },
+  { q:/.*/, a:'Sorry, I do not have that exact information. Ask about price, usage, water consumption, warranty or features.' }
 ];
+
 const cannedGu = [
-  { q:/કિંમત|દામ|રૂ|₹/i, a:'આ મોડેલની કિંમત રૂ. 65,000 છે.' },
-  { q:/સ્ટોક|ઉપલબ્ધ|મોજુдак/i, a:'સ્ટોરમાં ફક્ત 4 પીસ બાકી છે. EMI અને એક્સચેન્જ ઉપલબ્ધ છે.' },
-  { q:/વોરંટી|ગેરન્ટી/i, a:'આ ઉત્પાદન સાથે 2 વર્ષની ઉત્પાદક વોરંટી મળે છે.' },
-  { q:/ઉપયોગ|કેવી રીતે વાપરવું|કઈ રીતે ઉપયોગ|ઉપયોગ માટે/i, a:'ફ્રન્ટ-લોડ મશીનમાં સૂચિત ડિટર્જન્ટ વાપરો, યોગ્ય પ્રોગ્રામ પસંદ કરો અને ઓવરલોડ ન કરો.' },
-  { q:/પાણી|લિટર|પાણીનો ઉપયોગ|consumption/i, a:'દરેક પૂર્ણ વોશ સાયકલ માટે આશરે 60 લિટર પાણી વપરાય છે.' },
-  { q:/રંગ|કલર|પ્રાપ્ય રંગ|available color/i, a:'પ્રાપ્ય રંગો: પર્લ વ્હાઇટ અને ગ્રાફાઇટ સિલ્વર (સ્ટોક પર આધારિત).' },
-  { q:/માપ|ડાયમેન્શન|ઊંચાઈ|પહોળાઈ|ઊંડાઈ/i, a:'અંદાજે માપ: ઊંચાઈ 85 સે.મી., પહોળાઈ 60 સે.મી., ઊંડાઈ 55 સે.મી.' },
-  { q:/બિજળી|પાવર|વોટ|ઉર્જા|વિદ્યુત/i, a:'વિશિષ્ટ મોડ પર આધાર રાખે છે; કુલ વપરાશ આશરે 1.2 - 1.5 kWh છે.' },
-  { q:/ડિલિવરી|ઇન્સ્ટોલ|સેટ અપ/i, a:'શહેરની અંદર મફત ડિલિવરી અને ઇન્સ્ટોલેશન આપવામાં આવે છે.' },
-  { q:/સર્વિસ|મરામત|સપોર્ટ/i, a:'વોરંટી દરમિયાન ડોરસ્ટેપ સર્વિસ અને મફત ચેકઅપ ઉપલબ્ધ છે.' },
-  { q:/એક્સચેન્જ|જૂનુ|એક્સચેન્જ/i, a:'જૂનુ ઉપકરણ એક્સચેન્જ કરી ₹5,000 સુધીનો ડિસ્કાઉન્ટ મેળવો.' },
-  { q:/.*/, a:'માફ કરશો, મને તે ચોક્કસ માહિતી ઉપલબ્ધ નથી. કૃપા કરીને કિંમત, ઉપયોગ, પાણી ઉપયોગ અથવા વોરંટી વિશે પૂછો.' }
+  { q:/કિંમત|દામ|રૂ|₹/i, a:'તાજેતરના Samsung 12 kg મોડેલોનો ભાવ લગભગ ₹63,000–₹70,000 સુધી શરૂ થાય છે, ઓફર્સ અને મોડેલ પ્રમાણે બદલાય છે.' },
+  { q:/સ્ટોક|ઉપલબ્ધ/i, a:'સ્ટોક સ્ટોર દ્વારા બદલાય છે. કૃપા કરોને સ્ટોર પર તપાસો અથવા અમને કૉલ કરો — હાલમાં થોડા પીસ ઉપલબ્ધ હોઈ શકે છે.' },
+  { q:/વર્ણન|ડિસ્ક્રિપ્શન|મોડેલ વર્ણન|વિકલ્પ/i, a:
+    `Samsung 12 kg ફ્રન્ટ-લોડ વોશર્સમાં સામાન્ય રીતે AI-આધારિત વોશ, મોટી ક્ષમતા, ડિજિટલ ઇનવર્ટર મોટর, ક્વિક/એકો પ્રોગ્રામો, સ્ટીમ/હાઇજીન સાયકલ અને કેટલાક મોડેલમાં Wi-Fi/SmartThings વિધેય મળે છે. ચોક્કસ સુવિધાઓ મોડેલ પર આધારિત છે.` },
+  { q:/ઉપયોગ|કેવી રીતે વાપરવું/i, a:'સામાન સમાન રીતે લોેડ કરો, સૂચિત ડિટર્જન્ટ વાપરો, યોગ્ય પ્રોગ્રામ પસંદ કરો અને ઓવરલોડ રૂપી ટાળો.' },
+  { q:/પાણી|લિટર|ઉપયોગ/i, a:'સામાન્ય રીતે પૂરા વોશ માટે 50–70 લિટર સુધી પાણી વપરાય છે; એકો કાર્યક્રમ ઓછું પાણી વાપરે છે.' },
+  { q:/રંગ|ઉપલબ્ધ રંગ/i, a:'સામાન્ય રંગો: પર્લ વ્હાઇટ, ગ્રાફાઇટ/બ્લેક અને સિલ્વર — સ્ટોક અનુસાર બદલાય છે.' },
+  { q:/માપ|ડાયમેન્શન|સાથે માપ/i, a:'સામાન્ય માપ અંદાજે H 85 cm × W 60 cm × D 55–70 cm હોય છે; ચોક્કસ મોડેલ માટે લેબલ તપાસો.' },
+  { q:/વિદ્યુત|પાવર|સવાદન/i, a:'વિઅર, મોડ પર આધારિત; સામાન્ય રીતે પુર્ણ વોશ માટે આશરે 1.2–1.5 kWh ઊર્જા ખર્ચ હોય છે; એઆઈ/એકો મોડ ઊર્જા બચાવ કરે છે.' },
+  { q:/ડ્રાયર|ડ્રાય ફંક્શન/i, a:'કેટલાંક મોડેલોમાં વૉશર-ડ્રાયર ઓલ-ઇન-વન હોય છે; બધામાં નહીં — ચોક્કસ મોડેલ તપાસો.' },
+  { q:/ઇનવર્ટર|મોટર/i, a:'આધુનિક Samsung ફ્રન્ટ-લોડ મશીનોમાં ડિજિટલ ઇનવર્ટર મોટરનો ઉપયોગ થાય છે જે વધારે કાર્યક્ષમ અને ટકાઉ હોય છે.' },
+  { q:/પરિવાર|સુટેબલ|કેટલા લોકો માટે/i, a:'12 kg ક્ષમતા મધ્યમ થી મોટા પરિવાર (4+ સભ્યો) માટે યોગ્ય છે અને બેડિંગ/બ્લેન્કેટ સહેજે ધોઈ શકે છે.' },
+  { q:/ડિસ્પ્લે|ડીજીટલ|વાઈફાઈ/i, a:'ઘણા મોડેલમાં ડિજિટલ ડિસ્પ્લે મળે છે અને કેટલાકમાં Wi-Fi/SmartThings સપોર્ટ છે; તે મોડેલ આધારિત છે.' },
+  { q:/લાભ|શા માટે ખરીદવું|ફાયદા/i, a:'લાભ: મોટી ક્ષમતા, ડિજિટલ ઇનવર્ટર, અદ્યતન ધોવાની ટેકનોલોજી (AI/EcoBubble), ઊર્જા અસરકારિત પ્રોગ્રામ અને સ્માર્ટ ફીચર્સ કેટલાક મોડેલમાં.' },
+  { q:/નાની ક્ષમતા|શા માટે નાની નહીં/i, a:'12 kg વધુ મોટા અથવા બંધારણ વસ્ત્રો માટે એક જ સાઈકલમાં ધોવાની ક્ષમતા આપે છે — તેથી સમય અને ઊર્જા બચે છે.' },
+  { q:/બ્રાન્ડ કરતા સારું|અન્ય બ્રાન્ડ કરતાં કેમ સારું/i, a:'Samsung એ EcoBubble/AI Wash અને SmartThings સંકલન સાથે સારી પ્રક્રિયા આપે છે; પરંતુ સચોટ તુલના માટે નિર્દિષ્ટ મોડેલ નિર્દેશન જરૂરી છે.' },
+  { q:/પ્રોગ્રામ|ક્વિક વોશ|એકો વોશ/i, a:'બહુ મોડેલોમાં Quick Wash, Eco mode, Steam/Hygiene અને વિશેષ પ્રોગ્રામો ઉપલબ્ધ હોય છે.' },
+  { q:/ભારે લોડ|કરટન|બ્લેન્કેટ/i, a:'હાં — 12 kg મોટા અને ભારે લોડ સરળતા થી હેન્ડલ કરી શકે છે.' },
+  { q:/પ્રતિભાવ|રીવ્યુઝ/i, a:'ગ્રાહક પ્રતિસાદ (નમૂનાકાર):
+      1) \"સારી ક્લીનિંગ, કપડાં પર કેયર.\" 
+      2) \"મોટી ડ્રમ — બેડિંગ માટે ઉત્તમ.\" 
+      3) \"સ્માર્ટ ફીચર્સ ઉપયોગી, Wi-Fi સેટઅપ થોડીવાર લઈ શકે છે.\" 
+      4) \"આલાં અને શાંત ઓપરેશન.\"' },
+  { q:/.*/, a:'માફ કરશો, મને તે ચોક્કસ માહિતી ઉપલબ્ધ નથી. કૃપા કરી કિંમત, ઉપયોગ, પાણી ઉપયોગ અથવા વોરંટી વિશે પૂછો.' }
 ];
 
-/* ---- speech synth + WebAudio tap ---- */
-function speak(text, lang='en-IN'){
-  if(!('speechSynthesis' in window)){ document.getElementById('transcript').textContent = text; return; }
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = lang; u.rate = 1;
-  window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
-}
+/* ===== speech synthesis + WebAudio tap ===== */
+function speak(text, lang='en-IN'){ if(!('speechSynthesis' in window)){ document.getElementById('transcript').textContent = text; return; } const u = new SpeechSynthesisUtterance(text); u.lang = lang; u.rate = 1; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); }
 let audioCtx=null;
-function playTap(){
-  try{
-    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const now = audioCtx.currentTime;
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type='sine';
-    o.frequency.setValueAtTime(1000, now);
-    g.gain.setValueAtTime(0, now);
-    g.gain.linearRampToValueAtTime(0.12, now + 0.001);
-    g.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(now); o.stop(now + 0.14);
-  }catch(e){ console.warn('tap sound blocked', e && e.message); }
-}
+function playTap(){ try{ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); const now = audioCtx.currentTime; const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(1000, now); g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(0.12, now + 0.001); g.gain.exponentialRampToValueAtTime(0.001, now + 0.12); o.connect(g); g.connect(audioCtx.destination); o.start(now); o.stop(now + 0.14); }catch(e){ console.warn('tap sound', e && e.message); } }
 
-/* ---- recognition ---- */
-let recognition=null;
+/* ===== recognition with empty result handling ===== */
+let recognition = null;
+let lastHeard = false; // tracks if a candidate was heard in the session
 if(window.SpeechRecognition || window.webkitSpeechRecognition){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
   recognition.lang = 'en-IN';
   recognition.interimResults = false;
   recognition.maxAlternatives = 1;
+
   recognition.onresult = (e) => {
-    const t = e.results[0][0].transcript;
-    document.getElementById('transcript').textContent = (currentLang==='en' ? 'You: ' : 'તમે: ') + t;
-    handleQuery(t);
+    lastHeard = true;
+    const text = e.results[0][0].transcript;
+    document.getElementById('transcript').textContent = (currentLang==='en' ? 'You: ' : 'તમે: ') + text;
+    handleQuery(text);
   };
-  recognition.onend = () => document.getElementById('mic').classList.remove('listening');
-  recognition.onerror = (ev) => { document.getElementById('transcript').textContent = 'Error: ' + ev.error; document.getElementById('mic').classList.remove('listening'); };
+
+  recognition.onend = () => {
+    // if onend and nothing heard in this started session -> show tap prompt
+    document.getElementById('mic').classList.remove('listening');
+    if(!lastHeard){
+      // no result captured
+      document.getElementById('transcript').textContent = (currentLang==='en' ? 'Tap mic to speak' : 'માઇક દબાવો અને બોલો');
+    }
+    lastHeard = false; // reset for next session
+  };
+
+  recognition.onerror = (ev) => {
+    document.getElementById('transcript').textContent = 'Error: ' + (ev.error || ev.message);
+    document.getElementById('mic').classList.remove('listening');
+    lastHeard = false;
+  };
 }
 
-/* ---- query handling ---- */
+/* ===== match query and reply ===== */
 function handleQuery(text){
   const q = text.toLowerCase();
   if(currentLang === 'en'){
-    const f = cannedEn.find(c => c.q.test(q)) || cannedEn[cannedEn.length-1];
-    const ans = f.a;
+    const found = cannedEn.find(c => c.q.test(q)) || cannedEn[cannedEn.length-1];
+    const ans = found.a;
     document.getElementById('transcript').textContent = 'Assistant: ' + ans;
     speak(ans, 'en-IN');
   } else {
-    const f = cannedGu.find(c => c.q.test(q)) || cannedGu[cannedGu.length-1];
-    const ans = f.a;
+    const found = cannedGu.find(c => c.q.test(q)) || cannedGu[cannedGu.length-1];
+    const ans = found.a;
     document.getElementById('transcript').textContent = 'સહાયક: ' + ans;
     speak(ans, 'gu-IN');
   }
 }
 
-/* ---- mic click ---- */
-const mic = document.getElementById('mic');
-mic.addEventListener('click', ()=>{
+/* ===== mic click behavior ===== */
+const micBtn = document.getElementById('mic');
+micBtn.addEventListener('click', ()=>{
   playTap();
+  // start recognition or prompt fallback
   if(!recognition){
     const q = prompt(currentLang==='en' ? 'Type your question:' : 'તમારો પ્રશ્ન અહીં ટાઈપ કરો:');
-    if(q) handleQuery(q); return;
+    if(q) handleQuery(q);
+    return;
   }
-  recognition.lang = (currentLang==='en' ? 'en-IN' : 'gu-IN');
+  recognition.lang = (currentLang === 'en') ? 'en-IN' : 'gu-IN';
   try{
-    mic.classList.add('listening');
-    document.getElementById('transcript').textContent = currentLang==='en' ? 'Listening...' : 'શુણવામાં આવી રહ્યું છે...';
+    lastHeard = false;
+    micBtn.classList.add('listening');
+    document.getElementById('transcript').textContent = (currentLang==='en' ? 'Listening...' : 'શુણવામાં આવી રહ્યું છે...');
     recognition.start();
-  }catch(e){ mic.classList.remove('listening'); console.warn(e && e.message); }
+  }catch(e){
+    micBtn.classList.remove('listening');
+    document.getElementById('transcript').textContent = (currentLang==='en' ? 'Tap mic to speak' : 'માઇક દબાવો અને બોલો');
+  }
 });
-mic.tabIndex = 0; mic.addEventListener('keydown', e=> { if(e.key==='Enter' || e.key===' ') e.target.click(); });
+micBtn.tabIndex = 0;
+micBtn.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' ') e.target.click(); });
 
-/* ---- initial state ---- */
-setLang('en'); // defined earlier when building btn handlers
+/* ===== initial state ===== */
+setLang('en'); // ensure languages initialized
 
 </script>
 </body>
